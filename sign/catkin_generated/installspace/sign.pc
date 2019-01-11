@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: sign
+Description: Description of sign
+Version: 0.0.0
+Cflags: 
+Libs: -L/usr/local/lib 
+Requires: 
