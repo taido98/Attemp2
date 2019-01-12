@@ -1,0 +1,23 @@
+{
+    "files.associations": {
+        "vector": "cpp",
+        "*.tcc": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "array": "cpp",
+        "initializer_list": "cpp",
+        "string_view": "cpp",
+        "utility": "cpp",
+        "cmath": "cpp",
+        "complex": "cpp",
+        "limits": "cpp",
+        "algorithm": "cpp",
+        "*.ipp": "cpp",
+        "iostream": "cpp"
+    },
+    "python.autoComplete.extraPaths": [
+        "/home/thanh/catkin_cpp/devel/lib/python2.7/dist-packages",
+        "/opt/ros/kinetic/lib/python2.7/dist-packages"
+    ]
+}
