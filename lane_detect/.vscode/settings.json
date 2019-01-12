@@ -13,7 +13,8 @@
         "complex": "cpp",
         "limits": "cpp",
         "algorithm": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "iostream": "cpp"
     },
     "python.autoComplete.extraPaths": [
         "/home/thanh/catkin_cpp/devel/lib/python2.7/dist-packages",

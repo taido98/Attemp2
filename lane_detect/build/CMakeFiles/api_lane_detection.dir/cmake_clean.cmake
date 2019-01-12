@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/api_lane_detection.dir/src/detectlane.cpp.o"
   "CMakeFiles/api_lane_detection.dir/src/carcontrol.cpp.o"
+  "CMakeFiles/api_lane_detection.dir/src/PID.cpp.o"
+  "CMakeFiles/api_lane_detection.dir/src/utils.cpp.o"
   "devel/lib/libapi_lane_detection.pdb"
   "devel/lib/libapi_lane_detection.so"
 )

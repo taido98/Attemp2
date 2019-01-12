@@ -11,6 +11,16 @@
 },
 {
   "directory": "/home/thanh/catkin_cpp/src/lane_detect/build",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-5   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_PACKAGE_NAME=\\\"lane_detect\\\" -Dapi_lane_detection_EXPORTS -I/opt/ros/kinetic/include/opencv-3.3.1-dev -I/opt/ros/kinetic/include/opencv-3.3.1-dev/opencv -I/home/thanh/catkin_cpp/src/lane_detect/include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g -fPIC   -std=c++11 -o CMakeFiles/api_lane_detection.dir/src/PID.cpp.o -c /home/thanh/catkin_cpp/src/lane_detect/src/PID.cpp",
+  "file": "/home/thanh/catkin_cpp/src/lane_detect/src/PID.cpp"
+},
+{
+  "directory": "/home/thanh/catkin_cpp/src/lane_detect/build",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-5   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_PACKAGE_NAME=\\\"lane_detect\\\" -Dapi_lane_detection_EXPORTS -I/opt/ros/kinetic/include/opencv-3.3.1-dev -I/opt/ros/kinetic/include/opencv-3.3.1-dev/opencv -I/home/thanh/catkin_cpp/src/lane_detect/include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g -fPIC   -std=c++11 -o CMakeFiles/api_lane_detection.dir/src/utils.cpp.o -c /home/thanh/catkin_cpp/src/lane_detect/src/utils.cpp",
+  "file": "/home/thanh/catkin_cpp/src/lane_detect/src/utils.cpp"
+},
+{
+  "directory": "/home/thanh/catkin_cpp/src/lane_detect/build",
   "command": "/usr/bin/x86_64-linux-gnu-g++-5   -DROSCONSOLE_BACKEND_LOG4CXX -DROS_PACKAGE_NAME=\\\"lane_detect\\\" -isystem /opt/ros/kinetic/include/opencv-3.3.1-dev -isystem /opt/ros/kinetic/include/opencv-3.3.1-dev/opencv -I/home/thanh/catkin_cpp/src/lane_detect/include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/lane_detect.dir/src/main.cpp.o -c /home/thanh/catkin_cpp/src/lane_detect/src/main.cpp",
   "file": "/home/thanh/catkin_cpp/src/lane_detect/src/main.cpp"
 },

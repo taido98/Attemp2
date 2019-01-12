@@ -68,7 +68,7 @@ class DetectSign:
     def __init__(self,img):
         self.image = img
         self.box = None
-        self.fraction = 0
+        self.fraction_obatack = 0
         self.fraction_sign = 0
         self.sign = None
         self.masked = None
@@ -109,7 +109,7 @@ class DetectSign:
         topBlock = mask[0:100, 0:320]
         fraction = np.sum(topBlock)/(320*100)
         self.fraction_sign =fraction
-        print(fraction,"fracrion")
+        # print(fraction,"fracrion")
     def find_sign(self):
         try:
         # start = time()
@@ -141,7 +141,7 @@ class DetectSign:
         topBlock = mask[0:150, 50:270]
         fraction = np.sum(topBlock)/(150*220)
         self.fraction_obstack = fraction
-        print(fraction)
+        print(fraction ,"obstack: ")
     
 
     def preprocess_image(self):
@@ -185,16 +185,16 @@ class DetectSign:
 
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("-i","--image",required=True)
-    args = vars(ap.parse_args())
+# def main():
+#     ap = argparse.ArgumentParser()
+#     ap.add_argument("-i","--image",required=True)
+#     args = vars(ap.parse_args())
 
-    image = cv2.imread(args["image"])
-    Sign = DetectSign(image)
-    cv2.imshow('image',Sign.image)
-    cv2.waitKey(0)
-    # print(Sign.sign)
-if __name__ == '__main__':
-    main()
+#     image = cv2.imread(args["image"])
+#     Sign = DetectSign(image)
+#     cv2.imshow('image',Sign.image)
+#     cv2.waitKey(0)
+#     # print(Sign.sign)
+# if __name__ == '__main__':
+#     main()
 

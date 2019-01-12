@@ -24,6 +24,11 @@ from std_msgs.msg import Float32,String
 # from carcontrol import CarControl
 from detectsign import DetectSign
 
+##Save value
+SIGN = None
+FRACTION_SIGN = 0
+FRACTION_OBSTACK = 0
+
 class Sign:
     def __init__(self):
         '''Initialize ros publisher, ros subscriber'''
@@ -32,19 +37,23 @@ class Sign:
                                     CompressedImage, self.callback)
         self.pubsign = rospy.Publisher("sign_name",String, queue_size=10)
         # self.sign = rospy.Publisher("lane_detect", String, queue_size = 10)
-        self.sign = None
+        self.sign = SIGN
     def callback(self, ros_data):
         '''Callback function of subscribed topic.  Here images get converted and features detected'''
+
+        #Get image from websocket
         np_arr = np.fromstring(ros_data.data, np.uint8)
-        # out = cv2.VideoWriter('../videos/output.avi'.format(np.random.randint(1,50)),fourcc, 20.0, (640,480))
         image_np = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)#cv2.CV_LOAD_IMAGE_COLOR)
 
-        
-        # fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    
-        
-        # out.write(image_np)
+            
+        ##Get value from object
         Sign = DetectSign(image_np)
+        SIGN = Sign.sign
+        FRACTION_SIGN = Sign.fraction_sign
+        FRACTION_OBSTACK = Sign.fraction_obatack
+
+
+        ##Publish sign, fraction
         self.pubsign.publish(Sign.sign)
         cv2.imshow('image',Sign.image)
         k = cv2.waitKey(1)

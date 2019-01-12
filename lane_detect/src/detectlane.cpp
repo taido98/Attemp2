@@ -103,11 +103,31 @@ Mat DetectLane::preProcess(const Mat &src)
     inRange(imgHSV, Scalar(minThreshold[0], minThreshold[1], minThreshold[2]),
             Scalar(maxThreshold[0], maxThreshold[1], maxThreshold[2]),
             imgThresholded);
-    Canny(dst, dst, 50, 150, 3);
-    dst = birdViewTranform(imgThresholded);
+    Canny(dst, imgThresholded, 50, 150, 3);
+    // Mat mask = Region_of_interest();
+    
+    Mat mask = Mat::zeros(dst.size(), dst.type());
+    // Create black image with the same size as the original
+    for (int i = 0; i < mask.cols; i++)
+        for (int j = 0; j < mask.rows; j++)
+            mask.at<uchar>(Point(i, j)) = 0;
 
-    imshow("Bird View", dst);
+    // Create Polygon from vertices
+    vector<Point> ROI_Poly;
+    vector<Point> ROI_Vertices;
+    ROI_Vertices.push_back(Point(mask.rows/10, mask.cols));
+    ROI_Vertices.push_back(Point(mask.rows/5, mask.cols/8));
+    ROI_Vertices.push_back(Point(mask.rows-50, mask.cols/3));
+    ROI_Vertices.push_back(Point(mask.rows, mask.cols));
+    approxPolyDP(ROI_Vertices, ROI_Poly, 1.0, true);
+    // Fill polygon white
+    fillConvexPoly(mask, &ROI_Poly[0], ROI_Poly.size(), 255, 8, 0);
+    bitwise_and(mask,dst,dst);
+    imshow("mask",mask);
+    dst = birdViewTranform(dst);
+    
 
+   
     fillLane(dst);
 
     imshow("Binary", imgThresholded);
@@ -403,3 +423,5 @@ Mat DetectLane::birdViewTranform(const Mat &src)
 
     return dst;
 }
+
+
