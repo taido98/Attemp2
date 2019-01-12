@@ -23,7 +23,8 @@ public:
     ~CarControl();
     void driverCar(const vector<Point> &left, const vector<Point> &right, float velocity);
     // void callBackSign(const std_msgs::SignMsg::ConstPtr& msg);
-     void callBackSign(const std_msgs::String::ConstPtr& msg);
+    //  void callBackSign(const std_msgs::String::ConstPtr& msg);
+     void Callback(const std_msgs::String::ConstPtr& msg);
 private:
     float errorAngle(const Point &dst);
     ros::NodeHandle node_obj1;

@@ -8,10 +8,27 @@ CarControl::CarControl()
     speed_publisher = node_obj2.advertise<std_msgs::Float32>("Team1_speed", 10);
     // sign_subcriber = node_obj3.subscribe("sign_name", 2, &CarControl::callBackSign, this);
     //  sign_subcriber = node_obj3.subscribe("sign_name", 2, &CarControl::callBackSign, this);
+    sign_subcriber = node_obj3.subscribe("sign_name", 1000, &CarControl::Callback,this);
 }
 
 CarControl::~CarControl() {}
 
+
+void CarControl::Callback(const std_msgs::String::ConstPtr& msg)
+{
+    string sign = msg->data.c_str();
+    cout << sign << "-------------------------------";
+    if (sign == "left" or sign == "right")
+    {
+        cout << sign << "-------------------------------";
+        hasSign = true;
+        BRAKE = true;
+    }
+    // double fraction = msg.fraction;
+    // if (fraction > 0.1){
+    //     BRAKE = true;
+    // }
+}
 // void CarControl::callBackSign(const std_msgs::String::ConsttPtr &msg)
 // {
 //     string sign = msg->data.c_str();

@@ -152,8 +152,8 @@ Mat DetectLane::preProcess(const Mat &src)
     vector<Point> ROI_Poly;
     vector<Point> ROI_Vertices;
     ROI_Vertices.push_back(Point(0,240 ));
-    ROI_Vertices.push_back(Point(30,80));
-    ROI_Vertices.push_back(Point(300, 80));
+    ROI_Vertices.push_back(Point(30,110));
+    ROI_Vertices.push_back(Point(300, 110));
     ROI_Vertices.push_back(Point(320, 240));
     approxPolyDP(ROI_Vertices, ROI_Poly, 1.0, true);
     // Fill polygon white
