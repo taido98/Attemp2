@@ -10,7 +10,7 @@
 // #include "sign/SignMsg.h"
 #include <vector>
 #include <math.h>
-
+#include "PID.h"
 #include "detectlane.h"
 
 using namespace std;
@@ -24,16 +24,20 @@ public:
     void driverCar(const vector<Point> &left, const vector<Point> &right, float velocity);
     // void callBackSign(const std_msgs::SignMsg::ConstPtr& msg);
     //  void callBackSign(const std_msgs::String::ConstPtr& msg);
-     void Callback(const std_msgs::String::ConstPtr& msg);
+     void CallbackSign(const std_msgs::String::ConstPtr& msg);
+     void CallbackFraction(const std_msgs::Float32::ConstPtr& msg);   
 private:
     float errorAngle(const Point &dst);
     ros::NodeHandle node_obj1;
     ros::NodeHandle node_obj2;
     ros::NodeHandle node_obj3;
+    ros::NodeHandle node_obj4;
     
     ros::Publisher steer_publisher;
     ros::Publisher speed_publisher;
     ros::Subscriber sign_subcriber;
+    ros::Subscriber fraction_subcriber;
+
     Point carPos;
 
     float laneWidth = 40;
@@ -58,7 +62,7 @@ private:
     
     
 
-
+    int index = 0;
     bool hasSign = false;
     bool violate_left = false;
     bool violate_right = false;

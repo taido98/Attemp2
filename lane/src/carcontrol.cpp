@@ -8,96 +8,96 @@ CarControl::CarControl()
     speed_publisher = node_obj2.advertise<std_msgs::Float32>("Team1_speed", 10);
     // sign_subcriber = node_obj3.subscribe("sign_name", 2, &CarControl::callBackSign, this);
     //  sign_subcriber = node_obj3.subscribe("sign_name", 2, &CarControl::callBackSign, this);
-    sign_subcriber = node_obj3.subscribe("sign_name", 1000, &CarControl::Callback,this);
+    cvNamedWindow("PID",1);
+    cvCreateTrackbar("LowP", "PID", &t_kP, 10000);
+
+    cvCreateTrackbar("LowI", "PID", &t_kI, 1000);
+    // cvCreateTrackbar("HighI", "PID", &maxPID[1], 255);
+
+    cvCreateTrackbar("LowD", "PID", &t_kD, 1000);
+    // cvCreateTrackbar("HighD", "PID", &maxPID[2], 255);
+    cvCreateTrackbar("State", "PID", &index, 2);
+    fraction_subcriber = node_obj3.subscribe("fraction", 1000, &CarControl::CallbackFraction,this);
+    sign_subcriber = node_obj4.subscribe("sign_name", 1000, &CarControl::CallbackSign,this);
+    
 }
 
 CarControl::~CarControl() {}
 
+void CarControl::CallbackFraction(const std_msgs::Float32::ConstPtr& msg)
+{
+    double fraction = msg->data;
+    if (fraction > 0.1){
+        BRAKE = true;
+    }
 
-void CarControl::Callback(const std_msgs::String::ConstPtr& msg)
+}
+void CarControl::CallbackSign(const std_msgs::String::ConstPtr& msg)
 {
     string sign = msg->data.c_str();
-    cout << sign << "-------------------------------";
     if (sign == "left" or sign == "right")
     {
-        cout << sign << "-------------------------------";
+        cout << "The sign is: " <<sign;
         hasSign = true;
         BRAKE = true;
     }
-    // double fraction = msg.fraction;
-    // if (fraction > 0.1){
-    //     BRAKE = true;
-    // }
+    
 }
-// void CarControl::callBackSign(const std_msgs::String::ConsttPtr &msg)
-// {
-//     string sign = msg->data.c_str();
-//     cout << sign <<endl;
-//     // if (sign == "left" or sign == "right")
-//     // {
-//     //     cout << sign << "-------------------------------";
-//     //     hasSign = true;
-//     //     BRAKE = true;
-//     // }
-//     // double fraction = msg.fraction;
-//     // if (fraction > 0.1){
-//     //     BRAKE = true;
-//     // }
-// }
+
 
 // Cost funtion
-double CarControl::cost_keep_lane(double dist_closest_front, double cost_sign, double obstack_location, double dist_to_sign)
-{
-    // if close to sign-> don't go straight
-    double cost;
-    if (hasSign)
-    {
-        cost = cost_sign;
-    }
-    else
-    {
-        cost = 0;
-    }
+// double CarControl::cost_keep_lane(double dist_closest_front, double cost_sign, double obstack_location, double dist_to_sign)
+// {
+//     // if close to sign-> don't go straight
+//     double cost;
+//     if (hasSign)
+//     {
+//         cost = cost_sign;
+//     }
+//     else
+//     {
+//         cost = 0;
+//     }
 
-    return cost;
-}
-double CarControl::cost_change_left(double dist_closest_leftFront, double dist_closest_leftBack, double cost_sign, double obstack_location, double cost_turn_left)
-{
-    double cost;
-    if (violate_left) // not allow turn left
-    {
-        cost = cost_sign;
-    }
-    else
-    {
-        // Back, front point??
-        cost = cost_turn_left;
-    }
+//     return cost;
+// }
+// double CarControl::cost_change_left(double dx,  double cost_turn_left)//double dist_closest_leftFront, double dist_closest_leftBack, double cost_sign, double obstack_location, double cost_turn_left)
+// {
+//     double cost;
+//     if (violate_left) // not allow turn left
+//     {
+//         cost = cost_sign;
+//     }
+//     else
+//     {
+//         // Back, front point??
+//         cost = cost_turn_left;
+//     }
 
-    return cost;
-}
-double CarControl::cost_change_right(double dist_closest_rightFront, double dist_closest_rightBack, double cost_sign, double obstack_location, double cost_turn_right)
-{
-    double cost;
-    if (violate_right) // not allow turn left
-    {
-        cost = cost_sign;
-    }
-    else
-    {
-        // Back, front point??
-        cost = cost_turn_right;
-    }
+//     return cost;
+// }
+// double CarControl::cost_change_right(double dx,  double cost_turn_right)//dist_closest_rightFront, double dist_closest_rightBack, double cost_sign, double obstack_location, double cost_turn_right)
+// {
+//     double cost;
+//     if (violate_right) // not allow turn left
+//     {
+//         cost = cost_sign;
+//     }
+//     else
+//     {
+//         // Back, front point??
+//         cost = cost_turn_right;
+//     }
 
-    return cost;
-}
+//     return cost;
+// }
 
-double CarControl::cost_slow_down(double cost_break)
-{
-    double cost = cost_break;
-    cost += 10;
-    return cost;
-}
+// double CarControl::cost_slow_down(double cost_break)
+// {
+//     double cost = cost_break;
+//     cost += 10;
+//     return cost;
+// }
 
 float CarControl::errorAngle(const Point &dst)
 {
@@ -156,8 +156,8 @@ void CarControl::driverCar(const vector<Point> &left, const vector<Point> &right
     // costs.push_back(right_turn_tc);
 
     // Find the action with minimum cost
-    vector<String> STATE = {"go_straight",  "slow_down", "turn_left","turn_right"};
-    string state = "go_straight";
+    vector<String> STATE = {"go_straight", "turn_left","turn_right"};
+    string state;// = STATE[index];
     for (int i = 0; i < costs.size(); ++i)
 
     {
@@ -171,62 +171,103 @@ void CarControl::driverCar(const vector<Point> &left, const vector<Point> &right
     }
 
     // Hardset
-    state = "go_straight";
+    state = STATE[index];
 
 
     // Control with steates
 
     // Get usefull left,right points 
-    int i = left.size() - 11;
-    float error = preError;
-    while (left[i] == DetectLane::null && right[i] == DetectLane::null)
-    {
-        i--;
-        if (i < 0)
-            return;
+        
+     float error = preError;
+    if (state == "go_straight")
+    {   
+        cout << "State: "<< state <<endl;
+        // Like code btc
+        int i = left.size() - 11;
+   
+        while (left[i] == DetectLane::null && right[i] == DetectLane::null)
+        {
+            i--;
+            if (i < 0)
+                return;
+            }
+            if (left[i] != DetectLane::null && right[i] != DetectLane::null)
+            {
+                error = errorAngle((left[i] + right[i]) / 2);
+            }
+            else if (left[i] != DetectLane::null)
+            {
+                error = errorAngle(left[i] + Point(laneWidth / 2, 0));
+            }
+            else
+            {
+                error = errorAngle(right[i] - Point(laneWidth / 2, 0));
+            }
+
+        }
+
+    else if (state == "turn_left")
+    {   
+        cout << "State: "<< state <<endl;
+      
+        int i = left.size() - 7;
+        while (left[i] == DetectLane::null)
+        {
+            i--;
+            if (i < 0) return;
+        }
+        // using PID
+        // dist = sprt(left[i].x^2+ left[i].y^2);
+        Point dst = left[i];
+        kP = (double)t_kP/10000.0;
+        kI = (double)t_kI/100.0;
+        kD = (double)t_kD/100.0;
+
+        double pi = acos(-1.0);
+        double dx = dst.x - carPos.x +20;
+        double dy = carPos.y - dst.y; 
+
+        PID pid;
+        pid.Init(kP, kI, kD);
+        pid.UpdateError(-dx);
+        error = pid.TotalError();
+        cout << "dx: " << dx<<endl;
+        // error = -atan(-dx/dy) * 180 / pi;
     }
 
-    // if (state == "go_straight")
-    // {
-    //     if (left[i] != DetectLane::null && right[i] != DetectLane::null)
-    //     {
-    //         error = errorAngle((left[i] + right[i]) / 2);
-    //     }
+    else if (state == "turn_right")
+    {
+        cout << "State: "<< state <<endl;
+       
+        int i = right.size() - 7;
+        while (right[i] == DetectLane::null)
+        {
+            i--;
+            if (i < 0) return;
+        }
+        // using PID
+        // dist = sprt(left[i].x^2+ left[i].y^2);
+        Point dst = right[i];
+        kP = (double)t_kP/10000.0;
+        kI = (double)t_kI/100.0;
+        kD = (double)t_kD/100.0;
 
-    // }
-    // if (state == "left")
-    // {
-    //     error = errorAngle(left[i] + Point(laneWidth / 2, 0));
-
-    // }
-
-    // if (state == "right")
-    // {
-    //     error = errorAngle(right[i] - Point(laneWidth / 2, 0));
-
-    // }
+        double pi = acos(-1.0);
+        double dx = dst.x - carPos.x -20;
+        double dy = carPos.y - dst.y; 
+        
+        PID pid;
+        pid.Init(kP, kI, kD);
+        pid.UpdateError(-dx);
+        error= pid.TotalError();
+        cout << "dx: " << dx<<endl;
+        // error = dx;
+    }
 
 
     // int i = left.size() - 11;
     // float error = preError;
-    // while (left[i] == DetectLane::null && right[i] == DetectLane::null)
-    // {
-    //     i--;
-    //     if (i < 0)
-    //         return;
-    // }
-    if (left[i] != DetectLane::null && right[i] != DetectLane::null)
-    {
-        error = errorAngle((left[i] + right[i]) / 2);
-    }
-    else if (left[i] != DetectLane::null)
-    {
-        error = errorAngle(left[i] + Point(laneWidth / 2, 0));
-    }
-    else
-    {
-        error = errorAngle(right[i] - Point(laneWidth / 2, 0));
-    }
+    
 
 
 
@@ -240,5 +281,5 @@ void CarControl::driverCar(const vector<Point> &left, const vector<Point> &right
 
     steer_publisher.publish(angle);
     speed_publisher.publish(speed);
-    cout << "( angle, speed): " << angle << " " << speed << endl;
+    // cout << "( angle, speed): " << angle << " " << speed << endl;
 }

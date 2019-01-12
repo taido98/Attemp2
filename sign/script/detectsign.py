@@ -141,7 +141,7 @@ class DetectSign:
         topBlock = mask[0:150, 50:270]
         fraction = np.sum(topBlock)/(150*220)
         self.fraction_obstack = fraction
-        print(fraction ,"obstack: ")
+        #print(fraction ,"obstack: ")
     
 
     def preprocess_image(self):

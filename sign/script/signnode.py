@@ -22,6 +22,7 @@ class Sign:
 
                                     CompressedImage, self.callback)
         self.pubsign = rospy.Publisher("sign_name",String, queue_size=10)
+        self.pubfrac = rospy.Publisher("fraction",Float32, queue_size=10)
         # self.sign = rospy.Publisher("lane_detect", String, queue_size = 10)
         self.sign = None
     def callback(self, ros_data):
@@ -37,6 +38,7 @@ class Sign:
         # out.write(image_np)
         Sign = DetectSign(image_np)
         self.pubsign.publish(Sign.sign)
+        self.pubfrac.publish(Sign.fraction_sign)
         cv2.imshow('image',Sign.image)
         k = cv2.waitKey(1)
         if k == ord('q'):         # wait for ESC key to exit
