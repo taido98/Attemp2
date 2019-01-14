@@ -70,6 +70,7 @@ class DetectSign:
         self.box = None
         self.fraction_obatack = 0
         self.fraction_sign = 0
+        self.presign = None 
         self.sign = None
         self.masked = None
         self.mask_dark = None
@@ -83,7 +84,7 @@ class DetectSign:
             self.find_sign()
 
         self.find_fraction_obstack()
-        if (self.fraction_obstack > 2.5):
+        if (self.fraction_obstack > 2.7):  #2.5
             self.find_obstack()
         # # full_param_name = rospy.search_param('sign')
         # # # # param_value = rospy.get_param(full_param_name)
@@ -116,12 +117,15 @@ class DetectSign:
             sign,self.box= TD.detect_traffic_sign(self.image,self.masked)       ##sign_y is bottom vertical position of sign
             # sign,self.box = TD.detect_traffic_sign_NN(self.image,self.masked)
             # end = time()
-
+            
             # print(end-start,"duration detect sign")
             if (self.box[1][1]) > 30:
                 self.sign = sign
-        
+                
+
+            self.presign = self.sign
             cv2.putText(self.image, self.sign, (self.box[1][0]-55,self.box[1][1]+15), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 2) 
+            # cv2.imshow('image',self.image)
         except:
             pass
             # print("Error")
@@ -180,8 +184,16 @@ class DetectSign:
         right = np.amax(right,axis=0)
         # print(bottom,left,top,right)
 
+
+        # rect = bottom,left,top,right;
+        # # box = cv2.boxPoints(rect) 
+        # z = self.image[left-5:top+5,bottom-5:right+5]    
+        # cv2.imshow("ob",z)           # wait for ESC key to exit
+        # # cv2.imwrite('ss/{}.png'.format(np.random.randint(1,20)),self.image[ left:right, top:bottom] )
+        # # z = self.image[ top:bottom,left:right ]               # wait for ESC key to exit
+        # cv2.imwrite('ss/{}.png'.format(np.random.randint(0,100)),z)
+
         cv2.rectangle(self.image,(bottom-2,left-2), (right+1,top+1),(0,0,255),2)
-        
 
 
 

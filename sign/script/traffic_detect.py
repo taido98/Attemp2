@@ -240,7 +240,7 @@ def detect_traffic_sign_NN(image,mask):
     
     print('ok----------------')
     contours = findContour(mask)
-    sign, coordinate = findLargestSign(image, contours, 0.55, 10) #0.55 10
+    sign, coordinate = findLargestSign(image, contours, 0.85, 5) #0.55 10
     # import sys
     # sys.path.append('../pyimagesearch/')
     # # from preprocessing.imagetoarraypreprocessor import ImageToArrayPreprocessor
@@ -276,8 +276,12 @@ def detect_traffic_sign(image, mask, THRESHOLD = 100):
     contours = findContour(mask)
     sign, coordinate = findLargestSign(image, contours, 0.55, 10) #0.55 10
     k = cv2.waitKey(1)
-    if k == ord('s'):         # wait for ESC key to exit
-        cv2.imwrite('../data/right/{}.png'.format(np.random.randint(1,5000)),sign)
+    if k == ord(' '): 
+        x = np.random.randint(0,100)
+        y = np.random.randint(0,100)
+        z =  np.random.randint(30,100)
+        z = image[x:x+z,y,y+z]               # wait for ESC key to exit
+        cv2.imwrite('{}.png'.format(np.random.randint(1,50000)),z)
         # cv2.imwrite('Image/image_{}.png'.format(np.random.randint(1,10000)),image)
     # cv2.imwrite('../data/left/{}.png'.format(np.random.randint(1,5000)),sign)
     cv2.imshow('sign',sign)

@@ -1,0 +1,8 @@
+prefix=/home/thanh/catkin_cpp/src/build/devel
+
+Name: image_detect
+Description: Description of image_detect
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/thanh/catkin_cpp/src/build/devel/lib 
+Requires: 

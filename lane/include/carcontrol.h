@@ -15,17 +15,20 @@
 
 using namespace std;
 using namespace cv;
-
+vector<int> SIGN ;//= {0,0,0,0,0,0,0,0,0,0};
 class CarControl 
 {
 public:
     CarControl();
     ~CarControl();
-    void driverCar(const vector<Point> &left, const vector<Point> &right, float velocity);
+    void driverCar(const vector<Point> &left, const vector<Point> &right, int &velocity);
+    void driverCar2(const vector<Point> &left, const vector<Point> &right, int &velocity);
     // void callBackSign(const std_msgs::SignMsg::ConstPtr& msg);
     //  void callBackSign(const std_msgs::String::ConstPtr& msg);
      void CallbackSign(const std_msgs::String::ConstPtr& msg);
-     void CallbackFraction(const std_msgs::Float32::ConstPtr& msg);   
+     void CallbackFraction(const std_msgs::Float32::ConstPtr& msg); 
+     
+    
 private:
     float errorAngle(const Point &dst);
     ros::NodeHandle node_obj1;
@@ -39,29 +42,35 @@ private:
     ros::Subscriber fraction_subcriber;
 
     Point carPos;
-
+    
     float laneWidth = 40;
     bool BRAKE = false;
     bool FORWARD = true;
     float minVelocity = 10;
     float maxVelocity = 50;
-
+    
+    
     float preError;
 
     float kP;
     float kI;
     float kD;
 
-    int t_kP;
-    int t_kI;
-    int t_kD;
+    int t_kP = 2130;
+    int t_kI = 770;
+    int t_kD = 319;
 
     double speed = 60;
     double angle = 0;
 
-    
-    
 
+    int time_forward = 10;
+    int time_turn = 5;
+    int turnAngle = 5; // Hard angle 5-50
+    string sign;
+    
+    // double cost;
+    string prestate;
     int index = 0;
     bool hasSign = false;
     bool violate_left = false;
@@ -78,9 +87,9 @@ private:
         return sqrt((x1)*(x1)+(y1)*(y1));
     }
 
-    double cost_keep_lane(double dist_closest_front, double cost_sign, double obstack_location, double dist_to_sign);
-    double cost_change_left(double dist_closest_leftFront, double dist_closest_leftback,double cost_sign, double obstack_location, double dist_to_sign);
-    double cost_change_right(double dist_closest_rightFront, double dist_closest_rightback,double cost_sign, double obstack_location, double dist_to_sign);
+    double cost_keep_lane(double cost_sign);
+    double cost_change_left(double cost_turn_left);
+    double cost_change_right(double cost_turn_right);
     double cost_slow_down(double cost_);
 };
 

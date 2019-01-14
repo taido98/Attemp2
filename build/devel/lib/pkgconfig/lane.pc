@@ -1,0 +1,8 @@
+prefix=/home/thanh/catkin_cpp/src/build/devel
+
+Name: lane
+Description: Description of lane
+Version: 0.0.0
+Cflags: -I/home/thanh/catkin_cpp/src/lane/include
+Libs: -L/home/thanh/catkin_cpp/src/build/devel/lib -lapi_lane_detection
+Requires: roscpp

@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/thanh/catkin_cpp/src/build/devel/setup.sh

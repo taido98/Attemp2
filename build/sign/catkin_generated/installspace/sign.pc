@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: sign
+Description: Description of sign
+Version: 0.0.0
+Cflags: -I/usr/local/include
+Libs: -L/usr/local/lib -lsign
+Requires: roscpp rospy std_msgs message_runtime message_runtime

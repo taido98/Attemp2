@@ -21,7 +21,7 @@ limitations under the License.
 
 	<node name="sign_node" pkg="sign" type="signnode.py" output="screen"/>
 
-	<node name="rqt_graph" pkg="rqt_graph" type="rqt_graph" output="screen" />
+	
         <node name="lane" pkg="lane" type="lane" output="screen" args="_image_transport:=compressed" />
 
 </launch>

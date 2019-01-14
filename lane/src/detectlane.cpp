@@ -158,7 +158,7 @@ Mat DetectLane::preProcess(const Mat &src)
     approxPolyDP(ROI_Vertices, ROI_Poly, 1.0, true);
     // Fill polygon white
     fillConvexPoly(mask, &ROI_Poly[0], ROI_Poly.size(), 255, 8, 0);
-    imshow("mask",mask);
+    // imshow("mask",mask);
     bitwise_and(mask,imgThresholded,imgThresholded);
     dst = birdViewTranform(imgThresholded);
 

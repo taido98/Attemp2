@@ -35,9 +35,13 @@ class State{
 
 
 };
+
+
+int speed_ = 50;
+
 void imageCallback(const sensor_msgs::ImageConstPtr &msg)
 {
-
+    
     cv_bridge::CvImagePtr cv_ptr;
     Mat out;
     try
@@ -51,7 +55,8 @@ void imageCallback(const sensor_msgs::ImageConstPtr &msg)
         }
         detect->update(cv_ptr->image);
         // vector<Point> ()
-        car->driverCar(detect->getLeftLane(), detect->getRightLane(), 50);
+        // cvCreateTrackbar("speed", "Speed", &speed_, 120);
+        car->driverCar2(detect->getLeftLane(), detect->getRightLane(),speed_);
     }
     catch (cv_bridge::Exception &e)
     {
@@ -72,11 +77,12 @@ void videoProcess()
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "image_listener");
-    cv::namedWindow("View");
+    // cv::namedWindow("View");
     cv::namedWindow("Binary");
     cv::namedWindow("Threshold");
     cv::namedWindow("Bird View");
     cv::namedWindow("Lane Detect");
+    // cvNamedWindow("Speed",1);
     
     if (STREAM)
     {

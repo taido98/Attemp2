@@ -37,6 +37,11 @@ class Sign:
         
         # out.write(image_np)
         Sign = DetectSign(image_np)
+        start = rospy.Time.now()
+        # if (Sign.sign is not None):
+        #     while (rospy.Time.now() - start < rospy.Duration(0.5)):
+        #         self.pubsign.publish(Sign.sign)
+        #         self.pubfrac.publish(Sign.fraction_sign)
         self.pubsign.publish(Sign.sign)
         self.pubfrac.publish(Sign.fraction_sign)
         cv2.imshow('image',Sign.image)
