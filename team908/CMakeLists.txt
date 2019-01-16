@@ -22,7 +22,7 @@ catkin_package(
 )
 
 include_directories(
-  include
+  src/lane908/include
   ${catkin_INCLUDE_DIRS}
 )
 
