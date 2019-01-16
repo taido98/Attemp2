@@ -1,0 +1,56 @@
+{
+    "version": "2.0.0",
+    
+    "tasks": [
+        {
+            "label": "build & run file",
+            "type": "shell",
+            "command": "g++", 
+            "args": [
+                "${file}",
+                // "${fileBasenameNoExtension}.cpp"  ,
+                "-g",             
+                "-o",
+                "${fileBasenameNoExtension}2",
+                "`pkg-config", "--cflags", "--libs", "opencv`",
+                "-I/home/thanh/ros_ws/src/traffic_sign_recognition/include",
+                "-I${workspaceFolder}",
+                "-I/home/thanh/ros_ws/devel/include",
+                "-I/home/thanh/test/devel/include",
+                "-I/home/thanh/catkin_cpp/devel/include",
+                "-I/opt/ros/kinetic/include",
+                "-I/home/thanh/ros_ws/src/roomba_turtlebot/include",
+                "-I/home/thanh/ros_ws/src/traffic_sign_recognition/include",
+                "-I/usr/include",
+                "-I/usr/include/opencv2",
+                "-I${workspaceFolder}/include/config.h",
+                "-I/home/thanh/catkin_cpp/src/lane/include",
+
+                 "&&",
+                 "./${fileBasenameNoExtension}2" 
+
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options": {
+                
+                // "cwd": "${workspaceRoot}",
+                "cwd":"${workspaceFolder}",
+                "terminal.integrated.cwd": "${workspaceFolder}",
+                "terminal.integrated.splitCwd": "workspaceRoot"
+
+            },           
+           
+            "problemMatcher": {
+                "owner": "cpp",
+                // "fileLocation": ["relative", "${workspaceRoot}"],
+                "fileLocation": ["absolute"]
+            
+            },
+            
+      
+        }
+    ]
+  } 
